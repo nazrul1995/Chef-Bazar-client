@@ -1,7 +1,33 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import useAuth from '../../hooks/useAuth'
+import axios from 'axios'
 
-const PurchaseModal = ({ closeModal, isOpen }) => {
-  // Total Price Calculation
+const PurchaseModal = ({ closeModal, isOpen, meal }) => {
+
+  const { user } = useAuth()
+  const { foodImage, foodName, chefName, ingredients, estimatedDeliveryTime, price, chefId, chefExperience } = meal || {}
+
+  const handlePayment = async () => {
+    // Implement payment logic here
+
+    const paymentInfo = {
+      name: meal.foodName,
+      image: meal.foodImage,
+      price: meal.price,
+      quantity: 1,
+      plantId: meal._id,
+      customer: {
+        name: user?.displayName,
+        email: user?.email,
+      }
+    }
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_API_URL}/create-checkout-session`,
+      paymentInfo
+    )
+    window.location.href = data.url
+  }
+
 
   return (
     <Dialog
@@ -22,28 +48,45 @@ const PurchaseModal = ({ closeModal, isOpen }) => {
             >
               Review Info Before Purchase
             </DialogTitle>
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Plant: Money Plant</p>
-            </div>
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Category: Indoor</p>
-            </div>
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Customer: PH</p>
-            </div>
+            <div className='grid grid-cols-2'>
+              <div>
+                <img
+                  className='object-cover w-full h-[150px] rounded-md mt-4'
+                  src={foodImage}
+                  alt={foodName}
+                />
+              </div>
+              <div>
+                <div className='mt-2'>
+                  <p className='text-sm text-gray-500'>Meal: {meal.foodName}</p>
+                </div>
+                <div className='mt-2'>
+                  <p className='text-sm text-gray-500'>Chef Name: {meal.chefName}</p>
+                </div>
+                <div className='mt-2'>
+                  <p className='text-sm text-gray-500'>ingredients: {meal.ingredients}</p>
+                </div>
 
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Price: $ 120</p>
-            </div>
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Available Quantity: 5</p>
+                <div className='mt-2'>
+                  <p className='text-sm text-gray-500'>Estimate Delivery Time: {meal.estimatedDeliveryTime}</p>
+                </div>
+                <div className='mt-2'>
+                  <p className='text-sm text-gray-500'>Price: $ {meal.price}</p>
+                </div>
+                <div className='mt-2'>
+                  <p className='text-sm text-gray-500'>Available Quantity: {meal.chefId}</p>
+                </div>
+                <div className='mt-2'>
+                  <p className='text-sm text-gray-500'>Chef Experience: {meal.chefExperience}</p>
+                </div>
+              </div>
             </div>
             <div className='flex mt-2 justify-around'>
-              <button
+              <button onClick={handlePayment}
                 type='button'
                 className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
               >
-                Pay
+                Order Now
               </button>
               <button
                 type='button'

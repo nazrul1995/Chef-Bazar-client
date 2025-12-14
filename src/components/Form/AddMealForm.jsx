@@ -1,250 +1,191 @@
-import { useForm } from 'react-hook-form'
-import useAuth from '../../hooks/useAuth'
-import axios from 'axios'
-import { useMutation } from '@tanstack/react-query'
-import LoadingSpinner from '../Shared/LoadingSpinner'
-import ErrorPage from '../../pages/ErrorPage'
-import toast from 'react-hot-toast'
+import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import LoadingSpinner from "../Shared/LoadingSpinner";
+import ErrorPage from "../../pages/ErrorPage";
+import toast from "react-hot-toast";
+import { imageUpload } from "../../../utils";
+import { TbFidgetSpinner } from "react-icons/tb";
 
-import { imageUpload } from '../../../utils'
-import { TbFidgetSpinner } from 'react-icons/tb'
+const AddFoodForm = () => {
+  const { user } = useAuth();
 
-const AddPlantForm = () => {
-  const { user } = useAuth()
-
-  // useMutation hook useCase (POST || PUT || PATCH || DELETE)
+  // Mutation
   const {
     isPending,
     isError,
     mutateAsync,
     reset: mutationReset,
   } = useMutation({
-    mutationFn: async payload =>
-      await axios.post(`${import.meta.env.VITE_API_URL}/plants`, payload),
-    onSuccess: data => {
-      console.log(data)
-      // show toast
-      toast.success('Plant Added successfully')
-      // navigate to my inventory page
-      mutationReset()
-      // Query key invalidate
-    },
-    onError: error => {
-      console.log(error)
-    },
-    onMutate: payload => {
-      console.log('I will post this data--->', payload)
-    },
-    onSettled: (data, error) => {
-      console.log('I am from onSettled--->', data)
-      if (error) console.log(error)
-    },
-    retry: 3,
-  })
+    mutationFn: async (payload) =>
+      await axios.post(`${import.meta.env.VITE_API_URL}/add-meal`, payload),
 
-  // React Hook Form
+    onSuccess: () => {
+      toast.success("Food added successfully");
+      mutationReset();
+    },
+  });
+
+  // Form
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm()
+    //reset,
+  } = useForm();
 
-  const onSubmit = async data => {
-    const { name, description, quantity, price, category, image } = data
-    const imageFile = image[0]
+  const onSubmit = async (data) => {
+    const {
+      foodName,
+      chefName,
+      price,
+      ingredients,
+      estimatedDeliveryTime,
+      chefExperience,
+      chefId,
+      foodImageFile,
+      foodImageUrl,
+    } = data;
 
-    try {
-      const imageUrl = await imageUpload(imageFile)
-      const plantData = {
-        image: imageUrl,
-        name,
-        description,
-        quantity: Number(quantity),
-        price: Number(price),
-        category,
-        seller: {
-          image: user?.photoURL,
-          name: user?.displayName,
-          email: user?.email,
-        },
-      }
-      // await axios.post(`${import.meta.env.VITE_API_URL}/plants`, plantData),
-      await mutateAsync(plantData)
-      reset()
-    } catch (err) {
-      console.log(err)
+    let finalImage = foodImageUrl; // if user directly enters URL
+
+    // If file uploaded → upload and replace
+    if (foodImageFile?.[0]) {
+      finalImage = await imageUpload(foodImageFile[0]);
     }
-  }
 
-  if (isPending) return <LoadingSpinner />
-  if (isError) return <ErrorPage />
+    const newFood = {
+      foodName,
+      chefName,
+      foodImage: finalImage,
+      price: Number(price),
+      rating: 0, // default
+      ingredients: ingredients.split(",").map((i) => i.trim()),
+      estimatedDeliveryTime,
+      chefExperience,
+      chefId,
+      userEmail: user?.email,
+      createdAt: new Date().toISOString(),
+    };
+
+    await mutateAsync(newFood);
+    //reset();
+  };
+
+  if (isPending) return <LoadingSpinner />;
+  if (isError) return <ErrorPage />;
+
   return (
-    <div className='w-full min-h-[calc(100vh-40px)] flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50'>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
-          <div className='space-y-6'>
-            {/* Name */}
-            <div className='space-y-1 text-sm'>
-              <label htmlFor='name' className='block text-gray-600'>
-                Name
-              </label>
-              <input
-                className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                id='name'
-                type='text'
-                placeholder='Plant Name'
-                {...register('name', {
-                  required: 'Name is required',
-                  maxLength: {
-                    value: 20,
-                    message: 'Name cannot be too long',
-                  },
-                })}
-              />
+    <div className="w-full min-h-[calc(100vh-40px)] flex justify-center items-center bg-gray-50 text-gray-800">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
-              {errors.name && (
-                <p className='text-xs text-red-500 mt-1'>
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
-            {/* Category */}
-            <div className='space-y-1 text-sm'>
-              <label htmlFor='category' className='block text-gray-600 '>
-                Category
-              </label>
-              <select
-                required
-                className='w-full px-4 py-3 border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                name='category'
-                {...register('category', { required: 'Category is required' })}
-              >
-                <option value='Indoor'>Indoor</option>
-                <option value='Outdoor'>Outdoor</option>
-                <option value='Succulent'>Succulent</option>
-                <option value='Flowering'>Flowering</option>
-              </select>
-              {errors.category && (
-                <p className='text-xs text-red-500 mt-1'>
-                  {errors.category.message}
-                </p>
-              )}
-            </div>
-            {/* Description */}
-            <div className='space-y-1 text-sm'>
-              <label htmlFor='description' className='block text-gray-600'>
-                Description
-              </label>
-
-              <textarea
-                id='description'
-                placeholder='Write plant description here...'
-                className='block rounded-md focus:lime-300 w-full h-32 px-4 py-3 text-gray-800  border border-lime-300 bg-white focus:outline-lime-500 '
-                name='description'
-                {...register('description', {
-                  required: 'Description is required',
-                })}
-              ></textarea>
-              {errors.description && (
-                <p className='text-xs text-red-500 mt-1'>
-                  {errors.description.message}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className='space-y-6 flex flex-col'>
-            {/* Price & Quantity */}
-            <div className='flex justify-between gap-2'>
-              {/* Price */}
-              <div className='space-y-1 text-sm'>
-                <label htmlFor='price' className='block text-gray-600 '>
-                  Price
-                </label>
-                <input
-                  className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                  id='price'
-                  type='number'
-                  placeholder='Price per unit'
-                  {...register('price', {
-                    required: 'Price is required',
-                    min: { value: 0, message: 'Price must be positive' },
-                  })}
-                />
-                {errors.price && (
-                  <p className='text-xs text-red-500 mt-1'>
-                    {errors.price.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Quantity */}
-              <div className='space-y-1 text-sm'>
-                <label htmlFor='quantity' className='block text-gray-600'>
-                  Quantity
-                </label>
-                <input
-                  className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                  id='quantity'
-                  type='number'
-                  placeholder='Available quantity'
-                  {...register('quantity', {
-                    required: 'Quantity is required',
-                    min: { value: 1, message: 'Quantity must be at least 1' },
-                  })}
-                />
-                {errors.quantity && (
-                  <p className='text-xs text-red-500 mt-1'>
-                    {errors.quantity.message}
-                  </p>
-                )}
-              </div>
-            </div>
-            {/* Image */}
-            <div className=' p-4  w-full  m-auto rounded-lg grow'>
-              <div className='file_upload px-5 py-3 relative border-4 border-dotted border-gray-300 rounded-lg'>
-                <div className='flex flex-col w-max mx-auto text-center'>
-                  <label>
-                    <input
-                      className='text-sm cursor-pointer w-36 hidden'
-                      type='file'
-                      name='image'
-                      id='image'
-                      accept='image/*'
-                      hidden
-                      {...register('image', {
-                        required: 'Image is required',
-                      })}
-                    />
-                    {errors.image && (
-                      <p className='text-xs text-red-500 mt-1'>
-                        {errors.image.message}
-                      </p>
-                    )}
-                    <div className='bg-lime-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-lime-500'>
-                      Upload
-                    </div>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type='submit'
-              className='w-full cursor-pointer p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-lime-500 '
-            >
-              {isPending ? (
-                <TbFidgetSpinner className='animate-spin m-auto' />
-              ) : (
-                'Save & Continue'
-              )}
-            </button>
-          </div>
+        {/* Food Name */}
+        <div className="space-y-2">
+          <label>Food Name</label>
+          <input
+            className="w-full border px-3 py-2 rounded"
+            {...register("foodName", { required: "Food name is required" })}
+            placeholder="Grilled Chicken Salad"
+          />
+          {errors.foodName && <p className="text-red-500 text-xs">{errors.foodName.message}</p>}
         </div>
+
+        {/* Chef Name */}
+        <div className="space-y-2">
+          <label>Chef Name</label>
+          <input
+            defaultValue={user?.displayName}
+            className="w-full border px-3 py-2 rounded"
+            {...register("chefName", { required: "Chef name is required" })}
+          />
+          {errors.chefName && <p className="text-red-500 text-xs">{errors.chefName.message}</p>}
+        </div>
+
+        {/* Price */}
+        <div className="space-y-2">
+          <label>Price</label>
+          <input
+            type="number"
+            className="w-full border px-3 py-2 rounded"
+            {...register("price", { required: "Price is required" })}
+          />
+          {errors.price && <p className="text-red-500 text-xs">{errors.price.message}</p>}
+        </div>
+
+        {/* Ingredients */}
+        <div className="space-y-2">
+          <label>Ingredients (comma separated)</label>
+          <textarea
+            className="w-full border px-3 py-2 rounded"
+            {...register("ingredients", { required: "Ingredients are required" })}
+            placeholder="Chicken, Lettuce, Tomatoes"
+          ></textarea>
+          {errors.ingredients && <p className="text-red-500 text-xs">{errors.ingredients.message}</p>}
+        </div>
+
+        {/* Estimated Delivery Time */}
+        <div className="space-y-2">
+          <label>Estimated Delivery Time</label>
+          <input
+            className="w-full border px-3 py-2 rounded"
+            {...register("estimatedDeliveryTime", { required: true })}
+            placeholder="30 minutes"
+          />
+        </div>
+
+        {/* Chef Experience */}
+        <div className="space-y-2">
+          <label>Chef Experience</label>
+          <textarea
+            className="w-full border px-3 py-2 rounded"
+            {...register("chefExperience", { required: true })}
+            placeholder="5 years of experience..."
+          ></textarea>
+        </div>
+
+        {/* Chef ID */}
+        <div className="space-y-2">
+          <label>Chef ID</label>
+          <input
+            className="w-full border px-3 py-2 rounded"
+            {...register("chefId", { required: true })}
+            placeholder="chef_123456"
+          />
+        </div>
+
+        {/* Image Upload OR URL */}
+        <div className="space-y-4 col-span-1 lg:col-span-2">
+
+          <label>Food Image</label>
+
+          {/* Image URL */}
+          <input
+            className="w-full border px-3 py-2 rounded"
+            placeholder="https://example.com/image.jpg"
+            {...register("foodImageUrl")}
+          />
+
+          <p className="text-center">OR</p>
+
+          {/* File Upload */}
+          <input
+            type="file"
+            accept="image/*"
+            {...register("foodImageFile")}
+          />
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="w-full p-3 bg-lime-500 text-white rounded shadow-md"
+        >
+          {isPending ? <TbFidgetSpinner className="animate-spin m-auto" /> : "Save Food"}
+        </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default AddPlantForm
+export default AddFoodForm;

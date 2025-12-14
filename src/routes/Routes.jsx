@@ -2,7 +2,6 @@ import Home from '../pages/Home/Home'
 import ErrorPage from '../pages/ErrorPage'
 import Login from '../pages/Login/Login'
 import SignUp from '../pages/SignUp/SignUp'
-import PlantDetails from '../pages/PlantDetails/PlantDetails'
 import PrivateRoute from './PrivateRoute'
 import DashboardLayout from '../layouts/DashboardLayout'
 import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
@@ -14,6 +13,9 @@ import ManageOrders from '../pages/Dashboard/Seller/ManageOrders'
 import MyOrders from '../pages/Dashboard/Customer/MyOrders'
 import { createBrowserRouter } from 'react-router'
 import AddMeal from '../pages/Dashboard/Seller/AddMeal'
+import MealDetails from '../pages/MealDetails/MealDetails'
+import PaymentSuccess from '../pages/Payment/PaymentSuccess'
+
 
 export const router = createBrowserRouter([
   {
@@ -26,8 +28,12 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/plant/:id',
-        element: <PlantDetails />,
+        path: '/meals/:id',
+        element: <MealDetails />,
+      },
+      {
+        path: '/payment-success',
+        element: <PaymentSuccess />,
       },
     ],
   },
@@ -50,10 +56,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'add-plant',
+        path: 'add-meal',
         element: (
           <PrivateRoute>
-            <AddMeal />
+            <AddMeal/>
           </PrivateRoute>
         ),
       },

@@ -1,4 +1,4 @@
-import AddMealForm from '../../../components/Form/AddMealForm'
+import AddMealForm from "../../../components/Form/AddMealForm"
 
 const AddMeal = () => {
   return (
