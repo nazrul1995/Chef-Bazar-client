@@ -15,6 +15,7 @@ import { createBrowserRouter } from 'react-router'
 import AddMeal from '../pages/Dashboard/Seller/AddMeal'
 import MealDetails from '../pages/MealDetails/MealDetails'
 import PaymentSuccess from '../pages/Payment/PaymentSuccess'
+import OrderForm from '../components/Form/OrderForm'
 
 
 export const router = createBrowserRouter([
@@ -60,6 +61,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddMeal/>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'order-form',
+        element: (
+          <PrivateRoute>
+            <OrderForm/>
           </PrivateRoute>
         ),
       },

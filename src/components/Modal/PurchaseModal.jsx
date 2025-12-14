@@ -15,7 +15,7 @@ const PurchaseModal = ({ closeModal, isOpen, meal }) => {
       image: meal.foodImage,
       price: meal.price,
       quantity: 1,
-      plantId: meal._id,
+      meal_Id: meal._id,
       customer: {
         name: user?.displayName,
         email: user?.email,

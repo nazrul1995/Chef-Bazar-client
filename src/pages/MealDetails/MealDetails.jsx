@@ -3,7 +3,7 @@ import Heading from '../../components/Shared/Heading'
 import Button from '../../components/Shared/Button/Button'
 import PurchaseModal from '../../components/Modal/PurchaseModal'
 import { useState } from 'react'
-import { useParams } from 'react-router'
+import { Link, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { Send, Star } from 'lucide-react'
@@ -97,7 +97,7 @@ const MealDetails = () => {
           {/* PRICE & BUTTON */}
           <div className='flex justify-between items-center'>
             <p className='font-bold text-3xl text-gray-800'>Price: ${price}</p>
-
+            <Link to={'/dashboard/order-form'} className='btn btn-primary'>Order Now</Link>
             <Button onClick={() => setIsOpen(true)} label='Purchase' />
           </div>
 
