@@ -1,15 +1,23 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const PaymentSuccess = () => {
-    const {searchParams} = useSearchParams();
+    const [searchParams] = useSearchParams();
     const sessionId = searchParams.get('session_id');
+    const axiosSecure = useAxiosSecure();
+    //console.log('Session ID:', sessionId);
   useEffect(() => {
     if (sessionId) {
-     axios.post(`${import.meta.env.VITE_API_URL}/payment-success`, {sessionId})
+     axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
+     .then(response => {
+        console.log('Payment success handled:', response.data);
+     })
+     .catch(error => {
+        console.error('Error handling payment success:', error);
+     }); 
     }
-  }, [sessionId]);
+  }, [sessionId, axiosSecure]);
     return (
         <div>
             Payment Successful

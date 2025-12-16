@@ -15,7 +15,7 @@ const UpdatePlantForm = () => {
                 id='name'
                 type='text'
                 placeholder='Plant Name'
-                required
+                required 
               />
             </div>
             {/* Category */}

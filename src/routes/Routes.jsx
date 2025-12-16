@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'order-form',
+        path: '/dashboard/order-form/:id',
         element: (
           <PrivateRoute>
             <OrderForm/>
@@ -80,6 +80,15 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: 'payment-success',
+        element: (
+          <PrivateRoute>
+            <PaymentSuccess />
+          </PrivateRoute>
+        ),
+      },
+      
       {
         path: 'manage-users',
         element: (
