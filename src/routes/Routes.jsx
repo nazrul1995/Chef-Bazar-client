@@ -16,6 +16,8 @@ import AddMeal from '../pages/Dashboard/Seller/AddMeal'
 import MealDetails from '../pages/MealDetails/MealDetails'
 import PaymentSuccess from '../pages/Payment/PaymentSuccess'
 import OrderForm from '../components/Form/OrderForm'
+import PaymentHistory from '../pages/Payment/PaymentHistory'
+import Meals from '../pages/Meals/Meals'
 
 
 export const router = createBrowserRouter([
@@ -27,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
+      },
+      {
+        path: '/meals',
+        element: <Meals />,
       },
       {
         path: '/meals/:id',
@@ -77,6 +83,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <MyInventory />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'payment-history',
+        element: (
+          <PrivateRoute>
+            <PaymentHistory />
           </PrivateRoute>
         ),
       },

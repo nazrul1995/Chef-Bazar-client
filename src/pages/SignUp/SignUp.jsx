@@ -4,10 +4,10 @@ import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-hot-toast'
 import { TbFidgetSpinner } from 'react-icons/tb'
 import { useForm } from 'react-hook-form'
-import { imageUpload } from '../../../utils'
+import { imageUpload, saveOrUpdateUser } from '../../../utils'
 
 const SignUp = () => {
-  const { createUser, updateUserProfile, signInWithGoogle, loading } = useAuth()
+  const { createUser, updateUserProfile, loading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state || '/'
@@ -36,6 +36,14 @@ const SignUp = () => {
       const imageURL = await imageUpload(image[0])
 
       await createUser(email, password)
+
+      await saveOrUpdateUser({
+        name,
+        email,
+        image: imageURL,
+        address: data.address,
+      })
+
       await updateUserProfile(name, imageURL)
 
       toast.success('Signup Successful!')
@@ -46,18 +54,18 @@ const SignUp = () => {
     }
   }
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await signInWithGoogle()
-      toast.success('Signup Successful with Google!')
-      navigate(from, { replace: true })
-    } catch (err) {
-      toast.error(err?.message || 'Google signup failed')
-    }
-  }
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     await signInWithGoogle()
+  //     toast.success('Signup Successful with Google!')
+  //     navigate(from, { replace: true })
+  //   } catch (err) {
+  //     toast.error(err?.message || 'Google signup failed')
+  //   }
+  // }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-linear-to-b from-slate-900 to-slate-800 flex items-center justify-center py-12 px-4">
       {/* Green Circle Decorations */}
       <div className="absolute top-10 left-10 w-96 h-96 bg-lime-500 rounded-full opacity-20 blur-3xl -z-10"></div>
       <div className="absolute bottom-10 right-10 w-80 h-80 bg-lime-400 rounded-full opacity-30 blur-3xl -z-10"></div>
@@ -170,14 +178,14 @@ const SignUp = () => {
           <div className="flex-1 h-px bg-gray-600"></div>
         </div>
 
-        {/* Google */}
+        {/* Google
         <button
           onClick={handleGoogleSignIn}
           className="w-full flex items-center justify-center gap-4 py-4 border border-gray-600 rounded-xl hover:bg-slate-700/50 transition"
         >
           <FcGoogle size={28} />
           <span className="text-white font-medium">Continue with Google</span>
-        </button>
+        </button> */}
 
         {/* Login Link */}
         <p className="text-center mt-8 text-gray-400">

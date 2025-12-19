@@ -3,6 +3,7 @@ import { GrUserAdmin } from 'react-icons/gr'
 import MenuItem from './MenuItem'
 import { useState } from 'react'
 import BecomeSellerModal from '../../../Modal/BecomeSellerModal'
+import { HistoryIcon } from 'lucide-react'
 const CustomerMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -13,6 +14,7 @@ const CustomerMenu = () => {
   return (
     <>
       <MenuItem icon={BsFingerprint} label='My Orders' address='my-orders' />
+      <MenuItem icon={HistoryIcon} label='Payment History' address='payment-history' />
 
       <div
         onClick={() => setIsOpen(true)}
