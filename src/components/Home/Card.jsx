@@ -13,14 +13,14 @@ const Card = ({ meal }) => {
     chefName,
     foodImage,
     price,
-    rating = 0, 
+    averageRating = 0, 
     deliveryArea = [],
   } = meal || {};
 
   const [favorited, setFavorited] = useState(false);
 
   
-  const numericRating = Number(rating) || 0;
+  const numericRating = Number(averageRating) || 0;
   const fullStars = Math.floor(numericRating);
   const hasHalfStar = numericRating % 1 >= 0.5; 
 

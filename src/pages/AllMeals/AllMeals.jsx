@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import React, { useMemo, useState } from 'react'
@@ -7,7 +8,7 @@ import LoadingSpinner from '../../components/Shared/LoadingSpinner'
 import { motion } from 'framer-motion'
 
 const AllMeals = () => {
-  const [sortOrder, setSortOrder] = useState('default') // default | asc | desc
+  const [sortOrder, setSortOrder] = useState('default') 
 
   const { data: meals = [], isLoading } = useQuery({
     queryKey: ['daily-meals'],

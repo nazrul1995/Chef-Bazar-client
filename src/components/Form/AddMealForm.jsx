@@ -64,7 +64,8 @@ const AddFoodForm = () => {
       chefName: user?.displayName || "Unknown Chef",
       foodImage,
       price: Number(price),
-      rating: 0,
+      averageRating: 0,
+      totalReviews: 0,
       ingredients: ingredients
         .split(",")
         .map((item) => item.trim())
