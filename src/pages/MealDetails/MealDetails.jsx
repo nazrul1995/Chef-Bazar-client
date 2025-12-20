@@ -5,9 +5,11 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { Heart } from 'lucide-react'
 import { TbStarFilled } from 'react-icons/tb'
-import CustomerReview from '../Dashboard/Customer/CustomerReview'
 import Swal from 'sweetalert2'
 import useAuth from '../../hooks/useAuth'
+import CustomerReview from './CustomerReview'
+
+
 
 const MealDetails = () => {
   const { user } = useAuth() // logged-in user
@@ -124,7 +126,7 @@ const MealDetails = () => {
               <div className="space-y-6 text-lg">
                 <div className='flex justify-between'>
                   <p className="text-gray-400">Prepared by: <span className="text-2xl text-white font-semibold">{chefName}</span></p>
-                  <p className="text-gray-400">Experience: <span className='text-white'>{chefExperience}</span> Years</p>
+                  <p className="text-gray-400">Experience: <span className='text-white'>{chefExperience}</span></p>
                 </div>
 
                 <div className='flex justify-between'>

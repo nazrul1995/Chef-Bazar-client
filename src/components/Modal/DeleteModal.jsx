@@ -1,48 +1,40 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
-const DeleteModal = ({ closeModal, isOpen }) => {
+const DeleteModal = ({ isOpen, closeModal, onConfirm }) => {
   return (
     <Dialog
       open={isOpen}
-      as='div'
-      className='relative z-10 focus:outline-none '
+      as="div"
+      className="relative z-10 focus:outline-none"
       onClose={closeModal}
     >
-      <div className='fixed inset-0 z-10 w-screen overflow-y-auto'>
-        <div className='flex min-h-full items-center justify-center p-4'>
-          <DialogPanel
-            transition
-            className='w-full max-w-md bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0 shadow-xl rounded-2xl'
-          >
-            <DialogTitle
-              as='h3'
-              className='text-lg font-medium leading-6 text-gray-900'
+      <div className="fixed inset-0 z-10 bg-black/40 backdrop-blur-sm" />
+      <div className="fixed inset-0 z-10 flex items-center justify-center p-4">
+        <DialogPanel className="w-full max-w-md bg-white rounded-2xl p-6 shadow-xl">
+          <DialogTitle className="text-lg font-semibold text-gray-900">
+            Delete Review
+          </DialogTitle>
+
+          <p className="mt-3 text-sm text-gray-600">
+            Are you sure you want to delete this review? This action cannot be undone.
+          </p>
+
+          <div className="mt-6 flex justify-end gap-4">
+            <button
+              onClick={closeModal}
+              className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
             >
-              Are you sure?
-            </DialogTitle>
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>
-                You cannot undo once it&apos;s done!
-              </p>
-            </div>
-            <hr className='mt-8 ' />
-            <div className='flex mt-2 justify-around'>
-              <button
-                type='button'
-                className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
-              >
-                Yes
-              </button>
-              <button
-                type='button'
-                className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2'
-                onClick={closeModal}
-              >
-                No
-              </button>
-            </div>
-          </DialogPanel>
-        </div>
+              Cancel
+            </button>
+
+            <button
+              onClick={onConfirm}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+            >
+              Delete
+            </button>
+          </div>
+        </DialogPanel>
       </div>
     </Dialog>
   )

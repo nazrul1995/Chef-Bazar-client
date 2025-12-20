@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { TbStarFilled } from 'react-icons/tb'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import useAuth from '../../../hooks/useAuth'
+import useAuth from '../../hooks/useAuth'
+
 
 const CustomerReview = ({ meal, refetchMeal }) => {
   const { user } = useAuth()
@@ -23,8 +24,9 @@ const CustomerReview = ({ meal, refetchMeal }) => {
     e.preventDefault()
     const foodReview = {
       foodId: meal._id,
-      mealName: meal.title,
+      mealName: meal.foodName,
       reviewerName: user.displayName,
+      userEmail: user.email,
       reviewerImage: user.photoURL,
       rating,
       comment,

@@ -8,7 +8,7 @@ import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Common/Statistics'
 import MainLayout from '../layouts/MainLayout'
-import MyInventory from '../pages/Dashboard/Seller/MyInventory'
+//import MyInventory from '../pages/Dashboard/Seller/MyInventory'
 import ManageOrders from '../pages/Dashboard/Seller/ManageOrders'
 import MyOrders from '../pages/Dashboard/Customer/MyOrders'
 import { createBrowserRouter } from 'react-router'
@@ -19,6 +19,8 @@ import OrderForm from '../components/Form/OrderForm'
 import PaymentHistory from '../pages/Payment/PaymentHistory'
 import MyCreatedMeals from '../pages/Dashboard/Seller/MyCreatedMeals'
 import AllMeals from '../pages/AllMeals/AllMeals'
+import CustomerReviewDataRow from '../components/Dashboard/TableRows/CustomerReviewDataRow'
+import FavoriteMeals from '../components/Dashboard/TableRows/CustomerFavoriteData'
 
 
 export const router = createBrowserRouter([
@@ -87,14 +89,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: 'my-inventory',
-        element: (
-          <PrivateRoute>
-            <MyInventory />
-          </PrivateRoute>
-        ),
-      },
+      
       {
         path: 'payment-history',
         element: (
@@ -136,10 +131,28 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+
+      {
+        path: 'customer-review',
+        element:
+        <PrivateRoute>
+          <CustomerReviewDataRow/>
+        </PrivateRoute>,
+      },
+      {
+        path: 'customer-favorites',
+        element:
+        <PrivateRoute>
+          <FavoriteMeals/>
+        </PrivateRoute>,
+      },
+
+
       {
         path: 'manage-orders',
         element: <ManageOrders />,
       },
+      
     ],
   },
 ])
