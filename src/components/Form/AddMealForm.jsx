@@ -39,6 +39,7 @@ const AddFoodForm = () => {
       foodName,
       price,
       ingredients,
+      deliveryArea,
       estimatedDeliveryTime,
       chefExperience,
       chefId,
@@ -69,6 +70,10 @@ const AddFoodForm = () => {
         .map((item) => item.trim())
         .filter((item) => item !== ""),
       estimatedDeliveryTime: estimatedDeliveryTime.trim(),
+      deliveryArea: deliveryArea
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => item !== ""),
       chefExperience: chefExperience.trim(),
       chefId: chefId.trim(),
       userEmail: user?.email,
@@ -79,7 +84,7 @@ const AddFoodForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white py-16">
+    <div className="min-h-screen bg-linear-to-b from-slate-900 to-slate-800 text-white py-16">
       {/* Green Circle Decorations */}
       <div className="absolute top-20 left-10 w-96 h-96 bg-lime-500 rounded-full opacity-20 blur-3xl -z-10"></div>
       <div className="absolute bottom-20 right-20 w-80 h-80 bg-lime-400 rounded-full opacity-30 blur-3xl -z-10"></div>
@@ -128,12 +133,12 @@ const AddFoodForm = () => {
             </div>
 
             {/* Ingredients */}
-            <div className="space-y-3 md:col-span-2">
+            <div className="space-y-3">
               <label className="block text-xl font-medium">
                 Ingredients (comma separated) <span className="text-red-400">*</span>
               </label>
-              <textarea
-                rows={4}
+              <input
+                type="text"
                 placeholder="Chicken, Rice, Onion, Spices, Yogurt, Ghee"
                 className="w-full px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-lime-500"
                 {...register("ingredients", { required: "Ingredients are required" })}
@@ -153,14 +158,14 @@ const AddFoodForm = () => {
                 {...register("estimatedDeliveryTime", { required: "Required" })}
               />
             </div>
-
+           
             {/* Chef Experience */}
             <div className="space-y-3">
               <label className="block text-xl font-medium">
                 Chef Experience <span className="text-red-400">*</span>
               </label>
-              <textarea
-                rows={4}
+              <input
+                type="text"
                 placeholder="10 years specializing in South Asian cuisine"
                 className="w-full px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-lime-500"
                 {...register("chefExperience", { required: "Required" })}
@@ -180,7 +185,19 @@ const AddFoodForm = () => {
               />
               {errors.chefId && <p className="text-red-400 text-sm">{errors.chefId.message}</p>}
             </div>
-
+{/* Delivery Area */}
+            <div className="space-y-3 md:col-span-2">
+              <label className="block text-xl font-medium">
+                Delivery Area <span className="text-red-400">*</span>
+              </label>
+              <textarea
+                rows={4}
+                placeholder="Dhaka, Chittagong, Khulna, Rajshahi, Sylhet"
+                className="w-full px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-lime-500"
+                {...register("deliveryArea", { required: "Delivery area is required" })}
+              />
+              {errors.deliveryArea && <p className="text-red-400 text-sm">{errors.deliveryArea.message}</p>}
+            </div>
             {/* Food Image Upload */}
             <div className="space-y-3 md:col-span-2">
               <label className="block text-xl font-medium">

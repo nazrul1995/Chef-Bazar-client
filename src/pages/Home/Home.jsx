@@ -1,9 +1,11 @@
+// eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react"
 import Container from '../../components/Shared/Container'
 import { Link } from 'react-router'
 import Hero from "./Hero"
 import Categories from "./Categories"
-import DailyMeals from "./DailyMeals"
+import TodayMeals from "./TodayMeals"
+
 
 const Home = () => {
 
@@ -11,15 +13,11 @@ const Home = () => {
     <div className="min-h-screen bg-linear-to-b from-slate-900 to-slate-800 text-white">
       {/* Hero Section */}
       <Hero />
-      {/* Daily Meals Section */}
-      <DailyMeals />
+      {/* Today's Special Meals Section */}
+      <TodayMeals />
       {/* Categories Section */}
       <Categories />
-
-
-
-
-      {/* Extra Section: Customer Reviews (অ্যাসাইনমেন্টে দরকার) */}
+      {/* Customer Reviews Section */}
       <Container>
         <div className="py-16 bg-slate-900/50 rounded-3xl">
           <h2 className="text-3xl font-bold text-center mb-12">What Our Customers Say</h2>

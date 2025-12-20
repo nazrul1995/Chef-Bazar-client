@@ -17,7 +17,8 @@ import MealDetails from '../pages/MealDetails/MealDetails'
 import PaymentSuccess from '../pages/Payment/PaymentSuccess'
 import OrderForm from '../components/Form/OrderForm'
 import PaymentHistory from '../pages/Payment/PaymentHistory'
-import Meals from '../pages/Meals/Meals'
+import MyCreatedMeals from '../pages/Dashboard/Seller/MyCreatedMeals'
+import AllMeals from '../pages/AllMeals/AllMeals'
 
 
 export const router = createBrowserRouter([
@@ -32,7 +33,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/meals',
-        element: <Meals />,
+        element: <AllMeals />,
       },
       {
         path: '/meals/:id',
@@ -67,6 +68,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddMeal/>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'my-created-meals',
+        element: (
+          <PrivateRoute>
+            <MyCreatedMeals/>
           </PrivateRoute>
         ),
       },
