@@ -21,6 +21,7 @@ import MyCreatedMeals from '../pages/Dashboard/Seller/MyCreatedMeals'
 import AllMeals from '../pages/AllMeals/AllMeals'
 import CustomerReviewDataRow from '../components/Dashboard/TableRows/CustomerReviewDataRow'
 import FavoriteMeals from '../components/Dashboard/TableRows/CustomerFavoriteData'
+import ManageRequests from '../pages/Dashboard/Admin/ManageRequests'
 
 
 export const router = createBrowserRouter([
@@ -39,7 +40,9 @@ export const router = createBrowserRouter([
       },
       {
         path: '/meals/:id',
-        element: <MealDetails />,
+        element: <PrivateRoute>
+          <MealDetails />
+        </PrivateRoute>
       },
       {
         path: '/payment-success',
@@ -69,7 +72,7 @@ export const router = createBrowserRouter([
         path: 'add-meal',
         element: (
           <PrivateRoute>
-            <AddMeal/>
+            <AddMeal />
           </PrivateRoute>
         ),
       },
@@ -77,7 +80,7 @@ export const router = createBrowserRouter([
         path: 'my-created-meals',
         element: (
           <PrivateRoute>
-            <MyCreatedMeals/>
+            <MyCreatedMeals />
           </PrivateRoute>
         ),
       },
@@ -85,11 +88,11 @@ export const router = createBrowserRouter([
         path: '/dashboard/order-form/:id',
         element: (
           <PrivateRoute>
-            <OrderForm/>
+            <OrderForm />
           </PrivateRoute>
         ),
       },
-      
+
       {
         path: 'payment-history',
         element: (
@@ -106,7 +109,15 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      
+      {
+        path: 'manage-requests',
+        element: (
+          <PrivateRoute>
+            <ManageRequests />
+          </PrivateRoute>
+        ),
+      },
+
       {
         path: 'manage-users',
         element: (
@@ -135,16 +146,16 @@ export const router = createBrowserRouter([
       {
         path: 'customer-review',
         element:
-        <PrivateRoute>
-          <CustomerReviewDataRow/>
-        </PrivateRoute>,
+          <PrivateRoute>
+            <CustomerReviewDataRow />
+          </PrivateRoute>,
       },
       {
         path: 'customer-favorites',
         element:
-        <PrivateRoute>
-          <FavoriteMeals/>
-        </PrivateRoute>,
+          <PrivateRoute>
+            <FavoriteMeals />
+          </PrivateRoute>,
       },
 
 
@@ -152,7 +163,7 @@ export const router = createBrowserRouter([
         path: 'manage-orders',
         element: <ManageOrders />,
       },
-      
+
     ],
   },
 ])

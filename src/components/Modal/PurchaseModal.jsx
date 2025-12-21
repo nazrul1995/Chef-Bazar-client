@@ -5,7 +5,7 @@ import axios from 'axios'
 const PurchaseModal = ({ closeModal, isOpen, meal }) => {
 
   const { user } = useAuth()
-  const { foodImage, foodName, chefName, ingredients, estimatedDeliveryTime, price, chefId, chefExperience } = meal || {}
+  const { foodImage, foodName} = meal || {}
 
   const handlePayment = async () => {
     // Implement payment logic here

@@ -12,7 +12,7 @@ const MyOrders = () => {
   const { data: orders = [], isLoading, refetch } = useQuery({
     queryKey: ['my-orders', user?.email],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/my-orders/${user?.email}`)
+      const res = await axiosSecure.get(`/my-orders/${user?.email}`)
       return res.data
     },
   })

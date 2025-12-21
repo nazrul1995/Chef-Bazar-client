@@ -15,7 +15,6 @@ const MealDetails = () => {
   const { user } = useAuth() // logged-in user
   const { id } = useParams()
   const [isFavorite, setIsFavorite] = useState(false)
-
   // Fetch meal details
   const { data: meal = {}, isLoading, refetch } = useQuery({
     queryKey: ['meal', id],
