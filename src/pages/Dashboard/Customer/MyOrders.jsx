@@ -64,7 +64,7 @@ const MyOrders = () => {
       <div className="min-h-screen bg-linear-to-b from-slate-900 to-slate-800 flex items-center justify-center text-white">
         <div className="text-center">
           <p className="text-3xl font-bold">No orders yet!</p>
-          <p className="text-gray-400 mt-4">Start exploring delicious homemade meals.</p>
+          <p className="text-gray-400 mt-4">Start exploring delicious homemade food.</p>
         </div>
       </div>
     )
