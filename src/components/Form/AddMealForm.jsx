@@ -1,14 +1,18 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
-import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { imageUpload } from "../../../utils";
 import { TbFidgetSpinner } from "react-icons/tb";
 import Container from "../../components/Shared/Container";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useRole from "../../hooks/useRole";
+import LoadingSpinner from "../Shared/LoadingSpinner";
 
 const AddFoodForm = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure()
+  const [userData, isLoading] = useRole()
 
   const {
     register,
@@ -19,10 +23,7 @@ const AddFoodForm = () => {
 
   const { mutateAsync: addMeal, isPending } = useMutation({
     mutationFn: async (mealData) => {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/add-meal`,
-        mealData
-      );
+      const res = await axiosSecure.post(`/add-meal`, mealData);
       return res.data;
     },
     onSuccess: () => {
@@ -55,7 +56,7 @@ const AddFoodForm = () => {
     try {
       foodImage = await imageUpload(foodImageFile[0]);
     } catch (err) {
-      toast.error("Image upload failed",err.message);
+      toast.error("Image upload failed", err.message);
       return;
     }
 
@@ -76,13 +77,16 @@ const AddFoodForm = () => {
         .map((item) => item.trim())
         .filter((item) => item !== ""),
       chefExperience: chefExperience.trim(),
-      chefId: chefId.trim(),
+      chefId: chefId,
       userEmail: user?.email,
       createdAt: new Date().toISOString(),
     };
 
     await addMeal(newMeal);
   };
+
+  if (isLoading) return <LoadingSpinner></LoadingSpinner>
+  console.log(userData)
 
   return (
     <div className="min-h-screen bg-linear-to-b from-slate-900 to-slate-800 text-white py-16">
@@ -159,7 +163,7 @@ const AddFoodForm = () => {
                 {...register("estimatedDeliveryTime", { required: "Required" })}
               />
             </div>
-           
+
             {/* Chef Experience */}
             <div className="space-y-3">
               <label className="block text-xl font-medium">
@@ -180,13 +184,14 @@ const AddFoodForm = () => {
               </label>
               <input
                 type="text"
-                placeholder="chef_123456"
-                className="w-full px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-lime-500"
-                {...register("chefId", { required: "Chef ID is required" })}
+                className="w-full px-6 py-4 cursor-not-allowed bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-lime-500"
+                readOnly
+                value={userData?.chefId || ""}
+                {...register("chefId", { required: true })}
               />
               {errors.chefId && <p className="text-red-400 text-sm">{errors.chefId.message}</p>}
             </div>
-{/* Delivery Area */}
+            {/* Delivery Area */}
             <div className="space-y-3 md:col-span-2">
               <label className="block text-xl font-medium">
                 Delivery Area <span className="text-red-400">*</span>
