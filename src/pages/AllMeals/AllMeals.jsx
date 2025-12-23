@@ -9,6 +9,8 @@ import { motion } from 'framer-motion'
 
 const AllMeals = () => {
   const [sortOrder, setSortOrder] = useState('default') 
+  const [currentPage, setCurrentPage] = useState(1)
+  const mealsPerPage = 6
 
   const { data: meals = [], isLoading } = useQuery({
     queryKey: ['daily-meals'],
@@ -28,6 +30,15 @@ const AllMeals = () => {
     }
     return meals
   }, [meals, sortOrder])
+
+  // Paginated meals
+  const paginatedMeals = useMemo(() => {
+    const startIndex = (currentPage - 1) * mealsPerPage
+    const endIndex = startIndex + mealsPerPage
+    return sortedMeals.slice(startIndex, endIndex)
+  }, [sortedMeals, currentPage])
+
+  const totalPages = Math.ceil(sortedMeals.length / mealsPerPage)
 
   return (
     <div className="min-h-screen bg-linear-to-b from-slate-900 to-slate-800 text-white py-12">
@@ -59,30 +70,63 @@ const AllMeals = () => {
           <div className="flex justify-center items-center h-64">
             <LoadingSpinner />
           </div>
-        ) : sortedMeals && sortedMeals.length > 0 ? (
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-6 gap-8"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {},
-              visible: {
-                transition: {
-                  staggerChildren: 0.1,
+        ) : paginatedMeals && paginatedMeals.length > 0 ? (
+          <>
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-6 gap-8"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.1,
+                  },
                 },
-              },
-            }}
-          >
-            {sortedMeals.map((meal) => (
-              <motion.div
-                key={meal._id}
-                whileHover={{ scale: 1.05 }}
-                className="rounded-3xl overflow-hidden"
+              }}
+            >
+              {paginatedMeals.map((meal) => (
+                <motion.div
+                  key={meal._id}
+                  whileHover={{ scale: 1.05 }}
+                  className="rounded-3xl overflow-hidden"
+                >
+                  <Card meal={meal} />
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Pagination Buttons */}
+            <div className="flex justify-center mt-10 gap-2">
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-gray-700 rounded disabled:opacity-50"
               >
-                <Card meal={meal} />
-              </motion.div>
-            ))}
-          </motion.div>
+                Prev
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(i + 1)}
+                  className={`px-4 py-2 rounded ${
+                    currentPage === i + 1 ? 'bg-blue-600' : 'bg-gray-700'
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+
+              <button
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 bg-gray-700 rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          </>
         ) : (
           <div className="text-center text-gray-300 mt-20">
             No meals available today. Please check back later!

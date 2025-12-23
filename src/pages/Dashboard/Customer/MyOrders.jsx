@@ -158,7 +158,7 @@ const MyOrders = () => {
                         order.paymentStatus === 'pending' && (
                           <button
                             onClick={() => handlePayment(order)}
-                            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-lime-400 to-lime-500 text-black font-bold rounded-lg hover:from-lime-300 hover:to-lime-400 transition"
+                            className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-lime-400 to-lime-500 text-black font-bold rounded-lg hover:from-lime-300 hover:to-lime-400 transition"
                           >
                             💳 Pay
                           </button>

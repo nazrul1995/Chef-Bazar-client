@@ -167,7 +167,7 @@ const ManageRequests = () => {
                   <h2 className="text-lg sm:text-xl font-bold leading-tight">{req.chefName}</h2>
                   <p className="text-xs sm:text-sm text-gray-400 break-all">{req.userEmail}</p>
                 </div>
-                <span className={`min-w-[80px] text-center px-3 py-1 rounded-full text-xs font-bold ${
+                <span className={`min-w-20 text-center px-3 py-1 rounded-full text-xs font-bold ${
                   req.requestStatus === 'pending' ? 'bg-yellow-900/50 text-yellow-300'
                   : req.requestStatus === 'approved' ? 'bg-green-900/50 text-green-300'
                   : 'bg-red-900/50 text-red-300'
