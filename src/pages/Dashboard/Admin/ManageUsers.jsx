@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 const ManageUsers = () => {
   const { user } = useAuth()
   const axiosSecure = useAxiosSecure()
-  const [processedUsers, setProcessedUsers] = useState([]) // Track fraud users
+  const [processedUsers, setProcessedUsers] = useState([]) 
 
   const { data: users = [], isLoading, refetch } = useQuery({
     queryKey: ['users'],

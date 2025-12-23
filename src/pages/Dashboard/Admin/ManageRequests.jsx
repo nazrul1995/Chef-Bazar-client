@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 const ManageRequests = () => {
   const { user } = useAuth()
   const axiosSecure = useAxiosSecure()
-  const [processedRequests, setProcessedRequests] = useState([]) // Track approved/rejected requests
+  const [processedRequests, setProcessedRequests] = useState([])
 
   // Fetch role requests
   const {
@@ -26,7 +26,8 @@ const ManageRequests = () => {
 
   // Approve a request
   const handleApprove = async (req) => {
-    const confirm = await Swal.fire({
+    const confirm = await 
+    Swal.fire({
       title: 'Approve Request?',
       text: `Approve ${req.chefName} as ${req.requestType}?`,
       icon: 'question',

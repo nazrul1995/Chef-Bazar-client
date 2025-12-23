@@ -14,7 +14,7 @@ const AllMeals = () => {
     queryKey: ['daily-meals'],
     queryFn: async () => {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/meals`)
-      return res.data.slice(0, 6)
+      return res.data
     },
   })
 

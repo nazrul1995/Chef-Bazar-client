@@ -154,32 +154,32 @@ const MyOrders = () => {
 
                     {/* Actions */}
                     <td className="px-6 py-4 flex gap-2 flex-wrap">
-  {order.orderStatus === 'pending' &&
-    order.paymentStatus === 'pending' && (
-      <button
-        onClick={() => handlePayment(order)}
-        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-lime-400 to-lime-500 text-black font-bold rounded-lg hover:from-lime-300 hover:to-lime-400 transition"
-      >
-        💳 Pay
-      </button>
-    )}
+                      {order.orderStatus === 'pending' &&
+                        order.paymentStatus === 'pending' && (
+                          <button
+                            onClick={() => handlePayment(order)}
+                            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-lime-400 to-lime-500 text-black font-bold rounded-lg hover:from-lime-300 hover:to-lime-400 transition"
+                          >
+                            💳 Pay
+                          </button>
+                        )}
 
-  {['pending', 'accepted', 'preparing'].includes(order.orderStatus) &&
-    order.paymentStatus !== 'paid' && (
-      <button
-        onClick={() => handleCancel(order._id)}
-        className="flex items-center gap-2 px-4 py-2 bg-red-500/10 text-red-400 font-bold border border-red-500/30 rounded-lg hover:bg-red-500 hover:text-white transition"
-      >
-        ✖ Cancel
-      </button>
-    )}
+                      {['pending', 'accepted', 'preparing'].includes(order.orderStatus) &&
+                        order.paymentStatus !== 'paid' && (
+                          <button
+                            onClick={() => handleCancel(order._id)}
+                            className="flex items-center gap-2 px-4 py-2 bg-red-500/10 text-red-400 font-bold border border-red-500/30 rounded-lg hover:bg-red-500 hover:text-white transition"
+                          >
+                            ✖ Cancel
+                          </button>
+                        )}
 
-  {order.paymentStatus === 'paid' && (
-    <span className="flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-400 font-bold border border-green-500/30 rounded-lg">
-      ✔ Paid
-    </span>
-  )}
-</td>
+                      {order.paymentStatus === 'paid' && (
+                        <span className="flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-400 font-bold border border-green-500/30 rounded-lg">
+                          ✔ Paid
+                        </span>
+                      )}
+                    </td>
 
                   </tr>
                 ))}
@@ -222,12 +222,12 @@ const MyOrders = () => {
                 <div className="flex gap-3 flex-wrap mt-2">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-bold ${order.orderStatus === 'delivered'
-                        ? 'bg-green-900/50 text-green-300'
-                        : order.orderStatus === 'preparing'
-                          ? 'bg-blue-900/50 text-blue-300'
-                          : order.orderStatus === 'cancelled'
-                            ? 'bg-red-900/50 text-red-300'
-                            : 'bg-yellow-900/50 text-yellow-300'
+                      ? 'bg-green-900/50 text-green-300'
+                      : order.orderStatus === 'preparing'
+                        ? 'bg-blue-900/50 text-blue-300'
+                        : order.orderStatus === 'cancelled'
+                          ? 'bg-red-900/50 text-red-300'
+                          : 'bg-yellow-900/50 text-yellow-300'
                       }`}
                   >
                     {order.orderStatus}
@@ -235,8 +235,8 @@ const MyOrders = () => {
 
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-bold ${order.paymentStatus === 'paid'
-                        ? 'bg-green-900/50 text-green-300'
-                        : 'bg-red-900/50 text-red-300'
+                      ? 'bg-green-900/50 text-green-300'
+                      : 'bg-red-900/50 text-red-300'
                       }`}
                   >
                     {order.paymentStatus}
